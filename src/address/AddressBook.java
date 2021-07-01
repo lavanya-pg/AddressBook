@@ -23,6 +23,28 @@ public class AddressBook
 		            System.out.println(contact);
 		        }
 		    }
+		    public void addingContactList() {
+		        while (true) {
+		            System.out.println("Press 0 - Display all contacts");
+		            System.out.println("Press 1 - Add contact");
+		            System.out.println("Press 2 - Edit contact");
+		            System.out.println("Press 3 - Delete contact");
+		            System.out.println("Press 4 - Exit");
+		            int option = sc.nextInt();
+		            sc.nextLine();
+
+		            switch (option) {
+		                case 0 -> display(contactList);
+		                case 1 -> addingContact(null, contactList);
+		                case 2 -> editContact();
+		                case 3 -> deletingContact(contactList);
+		            }
+		            if (option == 4) {
+		                break;
+		            }
+		        }
+		    }
+		    
 		    
 		  
 		    public void addContact(Contact contactItems, ArrayList<Contact> contactList) {
@@ -138,25 +160,4 @@ public class AddressBook
 		            }
 		        }
 		    }
-
-		 	
-		      public void addContactList() {
-		        while (true) {
-		            System.out.println("Press 0 - Display all contacts");
-		            System.out.println("Press 1 - Add contact");
-		            System.out.println("Press 2 - Edit contact");
-		            System.out.println("Press 6 - Exit");
-		            int option = sc.nextInt();
-		            sc.nextLine();
-
-		            switch (option) {
-		                case 0 -> display(contactList);
-		                case 1 -> addContact(null, contactList);
-		                case 2 -> editContact();
-		            }
-		            if (option == 6) {
-		                break;
-		            }
-		        }
-
 }
