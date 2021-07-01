@@ -113,6 +113,10 @@ public class AddressBook
        System.out.println("Welcome to the Address Book System Program");
 	   AddressBook user1 = new  AddressBook();
 	   user1.contactDisplay();
+	   AddressBook user2 = new  AddressBook();
+	   user1.contactDisplay();
+	   AddressBook user3 = new  AddressBook();
+	   user1.contactDisplay();
 	}
 
 }
