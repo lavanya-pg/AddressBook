@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AddressBook 
+public class AddressBook
 {
-
 	HashMap<String, ArrayList<Contact>> addressBooks = new HashMap<>();
 	ArrayList<Contact> allContacts = new ArrayList<Contact>();
 	Scanner scanner = new Scanner(System.in);
@@ -34,20 +33,17 @@ public class AddressBook
 		if (addressBooks.containsKey(bookName)) 
 		{
 			ArrayList<Contact> contactList = addressBooks.get(bookName);
-			contactList.add(contact);
-			addressBooks.put(bookName, contactList);
-			System.out.println("New Contact Added Sucessfully");
+			addContactToExsistingBook(contact, bookName, contactList);
 		} 
 		else
 		{
 			allContacts.add(contact);
 			addressBooks.put(bookName, allContacts);
-			System.out.println("New book created and Contact Added Sucessfully");
+			System.out.println("created a address book and Contact Added Sucessfully");
 		}
 
 		return contact;
 	}
-
 	public boolean editContact(String phoneNumber)
 	{
 		for (Contact contact : allContacts) 
@@ -65,7 +61,7 @@ public class AddressBook
 				System.out.println("Enter zip");
 				String zip = scanner.next();
 				contact.setFirstName(firstName);
-				contact.setFirstName(lastName);
+				contact.setLastName(lastName);
 				contact.setCity(city);
 				contact.setState(state);
 				contact.setState(zip);
@@ -74,8 +70,6 @@ public class AddressBook
 		}
 		return operationStatus(false);
 	}
-
-	
 	public boolean deleteContact(String phoneNumber) 
 	{
 
@@ -89,19 +83,26 @@ public class AddressBook
 		}
 		return operationStatus(false);
 	}
-
-	
-	public void displayContacts() 
+	public void displayContacts(ArrayList<Contact> contactList)
 	{
-		for (Contact contact : allContacts) 
+		for (Contact contact : contactList)
 		{
 			System.out.println(contact);
 		}
 	}
 
+	public void displayContact() 
+	{
+		for (String bookName : addressBooks.keySet()) 
+		{
+			System.out.println(bookName);
+			ArrayList<Contact> contactList = addressBooks.get(bookName);
+			displayContacts(contactList);
+		}
+	}
 	private static boolean operationStatus(boolean status) 
 	{
-		if (status) 
+		if (status)
 		{
 			System.out.println("Contact Updated Successfully");
 		} 
@@ -111,43 +112,56 @@ public class AddressBook
 		}
 		return status;
 	}
-	
-		private void addContactToExsistingBook(Contact contact, String bookName, ArrayList<Contact> contactList)
+
+	private void addContactToExsistingBook(Contact contact, String bookName, ArrayList<Contact> contactList) {
+		boolean isAlreadyExsist = false;
+		for (Contact searchContact : contactList)
 		{
-			boolean isAlreadyExsist = false;
-			for (Contact searchContact : contactList) 
+			if (searchContact.getFirstName().equals(contact.getFirstName()))
 			{
-				if (searchContact.getFirstName().equals(contact.getFirstName()))
-				{
-					isAlreadyExsist = true;
-					break;
-				}
-			}
-			if( !(isAlreadyExsist) )
-			{
-				contactList.add(contact);				
-				addressBooks.put(bookName, contactList);
-				System.out.println("New Contact Added Sucessfully");
-			}
-			else
-			{
-				System.out.println("Contact already exsist");
+				isAlreadyExsist = true;
+				break;
 			}
 		}
+		if (!(isAlreadyExsist)) {
+			contactList.add(contact);
+			addressBooks.put(bookName, contactList);
+			System.out.println("New Contact Added Sucessfully");
+		} else {
+			System.out.println("Contact already exsist");
+		}
+	}
 
-		public void searchPerson(String searchKey)
+	public int searchPerson(String searchKey)
+	{
+		int count = 0;
+		for (String bookName : addressBooks.keySet())
 		{
-			for (String bookName : addressBooks.keySet())
+			ArrayList<Contact> contactList = addressBooks.get(bookName);
+			for (Contact contact : contactList) 
 			{
-				ArrayList<Contact> contactList  =  addressBooks.get(bookName);
-				for (Contact contact : contactList) 
+				if (contact.getCity().equals(searchKey) || contact.getState().equals(searchKey)) 
 				{
-					if (contact.getCity().equals(searchKey) ||  contact.getState().equals(searchKey) )
-					{
-						System.out.println(contact.getFirstName() + ""+ contact.getLastName());
-
-					}
+					System.out.println(contact.getFirstName() + "" + contact.getLastName());
+					count++;
 				}
 			}
 		}
+		return count;
+	}
+
+	public void viewPerson(String viewKey)
+	{
+		for (String bookName : addressBooks.keySet())
+		{
+			ArrayList<Contact> contactList = addressBooks.get(bookName);
+			for (Contact contact : contactList) 
+			{
+				if (contact.getCity().equals(viewKey) || contact.getState().equals(viewKey))
+				{
+					System.out.println(contact);
+				}
+			}
+		}
+	}
 }
