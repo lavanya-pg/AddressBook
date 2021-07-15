@@ -1,111 +1,153 @@
 package address;
 
+import java.util.HashMap;
 import java.util.ArrayList;
-
 import java.util.Scanner;
 
 public class AddressBook 
 {
-	public static Scanner sc = new Scanner(System.in);
-    public ArrayList<Contact> contactList = new ArrayList<>();
 
-    public void addContactDetails()
-    {
-        System.out.println("Enter the Details of ContactDetails");
-        System.out.println("Enter the first name");
-        String firstName = sc.next();
-        if (checkDuplicate(firstName)) 
-        {
-            System.out.println("Person is already exist");
-        }
-        else 
-        {
-            System.out.println("Enter the Last name");
-            String lastName = sc.next();
-            System.out.println("Enter the Address");
-            String address = sc.next();
-            System.out.println("Enter the City");
-            String city = sc.next();
-            System.out.println("Enter the State");
-            String state = sc.next();
-            System.out.println("Enter the email");
-            String email = sc.next();
-            System.out.println("Enter the ZipCode");
-            String zip = sc.next();
-            System.out.println("Enter the contact number...");
-            String phoneNumber = sc.next();
-            Contact contactofPerson = new Contact(firstName, lastName, address, city, state, email, phoneNumber, zip);
-            contactList.add(contactofPerson);
+	HashMap<String, ArrayList<Contact>> addressBooks = new HashMap<>();
+	ArrayList<Contact> allContacts = new ArrayList<Contact>();
+	Scanner scanner = new Scanner(System.in);
 
-        }
-    }
+	public Contact addContact() 
+	{
+		Contact contact = new Contact();
+		System.out.println("Enter First Name");
+		contact.setFirstName(scanner.next());
+		System.out.println("Enter Last Name");
+		contact.setLastName(scanner.next());
+		System.out.println("Enter City");
+		contact.setCity(scanner.next());
+		System.out.println("Enter State");
+		contact.setState(scanner.next());
+		System.out.println("Enter Pincode");
+		contact.setZip(scanner.next());
+		System.out.println("Enter Phone Number");
+		contact.setPhoneNumber(scanner.next());
+		System.out.println("Enter Email");
+		contact.setEmail(scanner.next());
+		System.out.println("Enter Book name to which you have to add contact");
+		String bookName = scanner.next();
 
-    public boolean editContactDetails(String Name) 
-    {
-        int flag = 0;
-        for(Contact contact: contactList)
-        {
-            if(contact.getFirstName().equals(Name))
-            {
-        
-				Scanner sc = new Scanner(System.in);
-                System.out.println("Enter Address: ");
-                String address = sc.next();
-                contact.setAddress(address);
-                System.out.println("Enter City: ");
-                String city = sc.next();
-                contact.setCity(city);
-                System.out.println("Enter State: ");
-                String state = sc.next();
-                contact.setState(state);
-                System.out.println("Enter Email: ");
-                String email = sc.next();
-                contact.setEmail(email);
-                System.out.println("Enter Phone Number:");
-                String phoneNumber = sc.next();
-                contact.setPhoneNumber(phoneNumber);
-                System.out.println("Enter Zip Code: ");
-                String zip = sc.next();
-                contact.setZip(zip);
-                flag = 1;
-            }
-        }
-        return flag == 1;
-    }
-      public boolean deleteContact(String name) 
-      {
-        int flag = 0;
-        for(Contact contact: contactList)
-        {
-            if(contact.getFirstName().equals(name))
-            {
-                contactList.remove(contact);
-                flag = 1;
-                break;
-            }
-        }
-          return flag == 1;
-    }
-    public boolean checkDuplicate(String fname)
-    {
-        int flag=0;
-        for (Contact p: contactList)
-        {
-            if (p.getFirstName().equals(fname))
-            {
-                flag=1;
-                break;
-            }
-        }
-        return flag == 1;
-    }
+		if (addressBooks.containsKey(bookName)) 
+		{
+			ArrayList<Contact> contactList = addressBooks.get(bookName);
+			contactList.add(contact);
+			addressBooks.put(bookName, contactList);
+			System.out.println("New Contact Added Sucessfully");
+		} 
+		else
+		{
+			allContacts.add(contact);
+			addressBooks.put(bookName, allContacts);
+			System.out.println("New book created and Contact Added Sucessfully");
+		}
 
+		return contact;
+	}
 
+	public boolean editContact(String phoneNumber)
+	{
+		for (Contact contact : allContacts) 
+		{
+			if (contact.getPhoneNumber() == phoneNumber)
+			{
+				System.out.println("Enter First Name");
+				String firstName = scanner.next();
+				System.out.println("Enter last Name");
+				String lastName = scanner.next();
+				System.out.println("Enter City");
+				String city = scanner.next();
+				System.out.println("Enter State");
+				String state = scanner.next();
+				System.out.println("Enter zip");
+				String zip = scanner.next();
+				contact.setFirstName(firstName);
+				contact.setFirstName(lastName);
+				contact.setCity(city);
+				contact.setState(state);
+				contact.setState(zip);
+				return operationStatus(true);
+			}
+		}
+		return operationStatus(false);
+	}
 
-      public void display() 
-      {
-  		for (Contact person : contactList)				
-  			System.out.println(person);
-  	  } 
+	
+	public boolean deleteContact(String phoneNumber) 
+	{
 
+		for (Contact contact : allContacts) 
+		{
+			if (contact.getPhoneNumber() == phoneNumber)
+			{
+				allContacts.remove(contact);
+				return operationStatus(true);
+			}
+		}
+		return operationStatus(false);
+	}
+
+	
+	public void displayContacts() 
+	{
+		for (Contact contact : allContacts) 
+		{
+			System.out.println(contact);
+		}
+	}
+
+	private static boolean operationStatus(boolean status) 
+	{
+		if (status) 
+		{
+			System.out.println("Contact Updated Successfully");
+		} 
+		else 
+		{
+			System.out.println("Contact not found");
+		}
+		return status;
+	}
+	
+		private void addContactToExsistingBook(Contact contact, String bookName, ArrayList<Contact> contactList)
+		{
+			boolean isAlreadyExsist = false;
+			for (Contact searchContact : contactList) 
+			{
+				if (searchContact.getFirstName().equals(contact.getFirstName()))
+				{
+					isAlreadyExsist = true;
+					break;
+				}
+			}
+			if( !(isAlreadyExsist) )
+			{
+				contactList.add(contact);				
+				addressBooks.put(bookName, contactList);
+				System.out.println("New Contact Added Sucessfully");
+			}
+			else
+			{
+				System.out.println("Contact already exsist");
+			}
+		}
+
+		public void searchPerson(String searchKey)
+		{
+			for (String bookName : addressBooks.keySet())
+			{
+				ArrayList<Contact> contactList  =  addressBooks.get(bookName);
+				for (Contact contact : contactList) 
+				{
+					if (contact.getCity().equals(searchKey) ||  contact.getState().equals(searchKey) )
+					{
+						System.out.println(contact.getFirstName() + ""+ contact.getLastName());
+
+					}
+				}
+			}
+		}
 }

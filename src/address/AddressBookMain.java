@@ -1,111 +1,67 @@
 package address;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookMain 
 {
-	    public static Scanner sc = new Scanner(System.in);
-	    private static AddressBook addressBook = new AddressBook();
-	    public Map<String,AddressBook> addressBookListMap = new HashMap<>();
-
-	    public void addAddressBook(String bookName){
-	        new AddressBookMain();
-	        boolean flag = true;
-
-	        while(flag) {
-
-	            System.out.println("1.Add Contact");
-	            System.out.println("2.Edit Contact");
-	            System.out.println("3.Delete");
-	            System.out.println("4.Exit");
-	            System.out.println("Enter Choice: ");
-
-	            int option = sc.nextInt();
-
-	            switch (option)
-	            {
-	                case 1:
-	                        addressBook.addContactDetails();
-	                        addressBook.display();
-	                    break;
-
-	                case 2:
-	                    System.out.println("Enter the Person First name to edit details: ");
-	                    String personName = sc.next();
-
-	                    boolean listEdited = ((AddressBook) addressBook).editContactDetails(personName);
-	                    if (listEdited) 
-	                    {
-	                        System.out.println("List Edited Successfully");
-	                    } 
-	                    else 
-	                    {
-	                        System.out.println("List Cannot be Edited");
-	                    }
-	                    ( addressBook).display();
-	                    break;
-
-	                case 3:
-	                    System.out.println("Enter the Contact to be deleted:");
-	                    String firstName = sc.next();
-	                    boolean listDeleted = addressBook.deleteContact(firstName);
-	                    if (listDeleted)
-	                    {
-	                        System.out.println("Deleted Contact from the List");
-	                    } 
-	                    else 
-	                    {
-	                        System.out.println("List Cannot be Deleted");
-	                    }
-	                    addressBook.display();
-	                    break;
-
-	                case 4:
-	                    flag =false;
-	                    break;
-
-	            }
-	        }
-	    }
-
-
-
-	    public static void main(String[] args)
-	    {
-	        System.out.println("Welcome to the Address Book program ");
-	        AddressBookMain addressBookMain = new AddressBookMain();
-	        boolean flag =true;
-	        while(flag)
-	        {
-	            System.out.println("1.Add New Address Book");
-	            System.out.println("2.Exit");
-	            System.out.println("Enter choice: ");
-	            int option = sc.nextInt();
-	            switch (option)
-	            {
-	                case 1: 
-	                {
-	                    System.out.println("Enter the Name of Address Book: ");
-	                    String addressBookName = sc.next();
-	                    if(addressBookMain.addressBookListMap.containsKey(addressBookName))
-	                    {
-	                        System.out.println("The Address book Already Exists");
-	                        break;
-	                    }
-	                    else 
-	                    {
-	                        addressBookMain.addAddressBook(addressBookName);
-	                        break;
-	                    }
-	                }
-	                case 2:
-	                {
-	                    flag = false;
-	                    break;
-	                }
-	            }
-	        }
-	    }
-	}
+	public static void main(String[] args)
+	{
+     	Scanner scanner = new Scanner(System.in);
+	     AddressBook contact = new AddressBook();
+	        
+	       while (true) 
+	       {
+				System.out.println("Please choose from below choices .");
+				System.out.println(" 1 Add Contact "
+						+ "\n 2 Edit Contact "
+						+"\n 3 Delete Contact "
+						+ "\n 4 Display Contact "
+						+ "\n 5 Search "
+						+ "\n 6 Exit ");
+				int userChoice = scanner.nextInt();
+				switch (userChoice) 
+				{
+					case 1:
+						contact.addContact();	
+						break;
+					case 2:
+						System.out.println("Enter the Phone Number");
+						String phoneNumber = scanner.next();
+						boolean updated = contact.editContact(phoneNumber);	
+						if(updated)
+						{
+							System.out.println("Contact Updated.");
+						}
+						else
+						{
+							System.out.println("Contact not found");
+						}
+						break;
+					case 3:
+						System.out.println("Enter the Phone Number");
+						String phoneNumberToDel = scanner.next();
+						 boolean status = contact.deleteContact(phoneNumberToDel);
+						 if(status)
+							{
+								System.out.println("Contact Deleted Successfully");
+							}
+							else
+							{
+								System.out.println("Contact not found");
+							}
+						 break;
+					case 4:	
+						contact.displayContacts();
+						break;
+					case 5:
+						System.out.println("Enter the city or state which to be searched");
+						String searchKey = scanner.next();
+						contact.searchPerson(searchKey);
+						break;
+					default:
+						System.out.println("Exit");
+						System.exit(0);
+				}
+			}
+		}
+}
