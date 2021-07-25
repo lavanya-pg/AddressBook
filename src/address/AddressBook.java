@@ -164,4 +164,35 @@ public class AddressBook
 			 	contatct.stream().sorted(Comparator.comparing(Contact::getFirstname)).forEach(n->System.out.println(n));
 			}
 		}
+		public void sortBY(int sortByWhich)
+		{
+			switch (sortByWhich)
+			{
+			case 1:
+				for (String bookName : addressBooks.keySet())
+				{
+					LinkedList<Contact> contatct = addressBooks.get(bookName);
+				 	contatct.stream().sorted(Comparator.comparing(Contact::getCity)).forEach(n->System.out.println(n));
+				}
+				break;
+			case 2:
+				for (String bookName : addressBooks.keySet())
+				{
+					LinkedList<Contact> contatct = addressBooks.get(bookName);
+					contatct.stream().sorted(Comparator.comparing(Contact::getState)).forEach(n->System.out.println(n));
+				}
+				break;
+			case 3:				
+				for (String bookName : addressBooks.keySet())
+				{
+					LinkedList<Contact> contatct = addressBooks.get(bookName);
+					contatct.stream().sorted(Comparator.comparing(Contact::getZipcode)).forEach(n->System.out.println(n));
+				}
+				break;
+			default:
+				System.out.println("Invalid Inout");
+				break;
+			}
+
+		}
 }
